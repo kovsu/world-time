@@ -1,5 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import TheHello from './components/TheHello.vue';
+</script>
 
-<template></template>
+<template>
+  <TheHello name="Quinn" />
+</template>
 
 <style></style>
