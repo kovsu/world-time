@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { zones } from "../composables/state";
+import ResultItem from "./ResultItem.vue";
 </script>
 
 <template>
   <div>
-   <pre>{{ zones }}</pre> 
+    <ResultItem
+      v-for="i in zones"
+      :key="i.name"
+      :name="i.name"
+      :offset="i.offset"
+    ></ResultItem>
   </div>
 </template>
 
-<style scoped>
-div {
-  padding: 10px;
-}
-</style>
+<style scoped></style>

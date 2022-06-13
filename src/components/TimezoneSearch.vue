@@ -18,6 +18,8 @@ const searchResult = computed(() => {
 });
 
 function add(t: Timezone) {
+  const ul = document.querySelector("ul");
+  ul?.scrollTo(0, 0);
   addToTimezone(t);
   input.value = "";
   index.value = 0;
@@ -25,13 +27,12 @@ function add(t: Timezone) {
 
 function onKeyDown(e: KeyboardEvent) {
   if (e.key === "ArrowDown") {
-    index.value = (index.value + 1) % searchResult.value.length;
+    index.value = (index.value + 1) % searchResult.value.length;  
   }
   if (e.key === "ArrowUp") {
     index.value =
       (index.value - 1 + searchResult.value.length) % searchResult.value.length;
   }
-
   if (e.key === "Enter") {
     add(searchResult.value[index.value].item);
   }
@@ -46,6 +47,7 @@ function onKeyDown(e: KeyboardEvent) {
       placeholder="Search timezone ..."
       @keydown="onKeyDown"
     />
+    <!-- TODO: 使用上下键时锁定active -->
     <ul v-show="input">
       <TimezoneItem
         v-for="(res, idx) of searchResult"
@@ -82,10 +84,12 @@ ul {
   width: 100%;
   height: 200px;
   overflow: auto;
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 ::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
+  display: none; 
 }
 
 .active {
