@@ -4,6 +4,7 @@ import Fuse from "fuse.js";
 import { timezone } from "../composables/data";
 import { addToTimezone } from "../composables/state";
 import { Timezone } from "../types";
+import TimezoneItem from "./TimezoneItem.vue";
 
 // fuzzy searching
 const fuse = new Fuse(timezone, {
@@ -21,24 +22,40 @@ function add(t: Timezone) {
   input.value = "";
   index.value = 0;
 }
+
+function onKeyDown(e: KeyboardEvent) {
+  if (e.key === "ArrowDown") {
+    index.value = (index.value + 1) % searchResult.value.length;
+  }
+  if (e.key === "ArrowUp") {
+    index.value =
+      (index.value - 1 + searchResult.value.length) % searchResult.value.length;
+  }
+
+  if (e.key === "Enter") {
+    add(searchResult.value[index.value].item);
+  }
+}
 </script>
 
 <template>
   <div class="search">
-    <input type="text" v-model="input" placeholder="Search timezone ..." />
+    <input
+      type="text"
+      v-model="input"
+      placeholder="Search timezone ..."
+      @keydown="onKeyDown"
+    />
     <ul v-show="input">
-      <li
-        v-for="res of searchResult"
+      <TimezoneItem
+        v-for="(res, idx) of searchResult"
         :key="res.refIndex"
+        :name="res.item.name"
+        :offset="res.item.offset"
         @click="add(res.item)"
+        :class="{ active: index === idx }"
       >
-        <div>
-          {{ res.item.offset }}
-        </div>
-        <div>
-          {{ res.item.name }}
-        </div>
-      </li>
+      </TimezoneItem>
     </ul>
   </div>
 </template>
@@ -50,7 +67,9 @@ function add(t: Timezone) {
 
 input {
   width: 100%;
-  padding: 5px 10px;
+  height: 36px;
+  border-radius: 5px;
+  padding: 15px 10px;
   background-color: transparent;
   outline: none;
   border: 1px solid rgba(128, 128, 128, 0.15);
@@ -59,13 +78,17 @@ input {
 ul {
   list-style: none;
   position: absolute;
-  background-color: gray;
+  background-color: #fff;
   width: 100%;
+  height: 200px;
+  overflow: auto;
 }
 
-li {
-  display: flex;
-  margin-left: 10px;
-  gap: 20px;
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}
+
+.active {
+  background-color: #eee;
 }
 </style>

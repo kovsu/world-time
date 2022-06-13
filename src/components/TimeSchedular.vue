@@ -4,8 +4,12 @@ import { zones } from "../composables/state";
 
 <template>
   <div>
-    <pre>{{ zones }}</pre>
+   <pre>{{ zones }}</pre> 
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+div {
+  padding: 10px;
+}
+</style>
