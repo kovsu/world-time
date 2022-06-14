@@ -6,8 +6,9 @@ import ResultItem from "./ResultItem.vue";
 <template>
   <div>
     <ResultItem
-      v-for="i in zones"
+      v-for="(i, index) in zones"
       :key="i.name"
+      :index="index"
       :name="i.name"
       :offset="i.offset"
     ></ResultItem>

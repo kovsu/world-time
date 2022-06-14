@@ -88,6 +88,7 @@ input {
 ul {
   list-style: none;
   position: absolute;
+  z-index: 2;
   background-color: #fff;
   width: 100%;
   height: 200px;
